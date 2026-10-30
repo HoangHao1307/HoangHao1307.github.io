@@ -1,0 +1,186 @@
+---
+// GuitarVisualizer.astro
+// CSS-only animated guitar string / sound wave bars
+---
+
+<div class="guitar-visualizer" aria-hidden="true">
+  <div class="viz-label">
+    <span>⚡ SONIC FREQ</span>
+    <span class="viz-hz" id="viz-hz">—  Hz</span>
+  </div>
+  <div class="viz-bars">
+    {Array.from({ length: 18 }).map((_, i) => (
+      <div class="viz-bar" style={`--i:${i};`}></div>
+    ))}
+  </div>
+  <div class="guitar-string-wrap">
+    <div class="g-string s1"></div>
+    <div class="g-string s2"></div>
+    <div class="g-string s3"></div>
+    <div class="g-string s4"></div>
+    <div class="g-string s5"></div>
+    <div class="g-string s6"></div>
+    <div class="g-string s7"></div>
+  </div>
+  <div class="viz-readout">
+    <span class="readout-item"><span class="readout-label">DROP:</span> A</span>
+    <span class="readout-item"><span class="readout-label">TUNE:</span> 7-STR</span>
+    <span class="readout-item"><span class="readout-label">GAIN:</span> <span class="gain-bar">▓▓▓▓▓▓▓░░</span></span>
+    <span class="readout-item"><span class="readout-label">BPM:</span> <span id="viz-bpm">—</span></span>
+  </div>
+</div>
+
+<style>
+  .guitar-visualizer {
+    background: #050505;
+    border: 1px solid var(--color-border);
+    padding: 1rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .guitar-visualizer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,255,0.012) 3px,
+      rgba(255,255,255,0.012) 4px
+    );
+    pointer-events: none;
+  }
+
+  .viz-label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    font-size: 0.65rem;
+  }
+
+  .viz-hz {
+    color: var(--color-text-muted);
+  }
+
+  /* === FREQUENCY BARS === */
+  .viz-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 48px;
+  }
+
+  .viz-bar {
+    flex: 1;
+    background: var(--color-accent);
+    border-radius: 1px 1px 0 0;
+    transform-origin: bottom center;
+    animation: bar-pulse calc(0.3s + var(--i, 0) * 0.04s) ease-in-out infinite alternate;
+    min-height: 3px;
+    opacity: 0.85;
+  }
+
+  .viz-bar:nth-child(2n)  { background: #ff2d34; opacity: 0.7; }
+  .viz-bar:nth-child(3n)  { background: #c40f14; opacity: 0.6; }
+
+  @keyframes bar-pulse {
+    0%  { height: 4px; }
+    100% { height: calc(8px + var(--i, 0) * 2.2px + 4px); }
+  }
+
+  /* === GUITAR STRINGS === */
+  .guitar-string-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0.25rem 0;
+    border-top: 1px dashed var(--color-border);
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .g-string {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong) 10%, var(--color-border-strong) 90%, transparent);
+    transform-origin: center;
+    position: relative;
+  }
+
+  /* Each string vibrates at slightly different rhythm - slam riff feel */
+  .g-string.s1 { animation: strum1 0.18s ease-in-out infinite alternate; opacity: 0.9; background: linear-gradient(90deg, transparent, #888 10%, #888 90%, transparent); }
+  .g-string.s2 { animation: strum2 0.22s ease-in-out infinite alternate; opacity: 0.85; }
+  .g-string.s3 { animation: strum3 0.19s ease-in-out infinite alternate 0.05s; opacity: 0.8; }
+  .g-string.s4 { animation: strum4 0.25s ease-in-out infinite alternate 0.02s; opacity: 0.75; }
+  .g-string.s5 { animation: strum5 0.17s ease-in-out infinite alternate 0.08s; opacity: 0.7; }
+  .g-string.s6 { animation: strum6 0.28s ease-in-out infinite alternate; opacity: 0.65; background: linear-gradient(90deg, transparent, var(--color-accent) 10%, var(--color-accent) 90%, transparent); }
+  .g-string.s7 { animation: strum7 0.21s ease-in-out infinite alternate 0.03s; opacity: 0.9; background: linear-gradient(90deg, transparent, var(--color-accent) 10%, var(--color-accent) 90%, transparent); }
+
+  @keyframes strum1 { 0% { transform: scaleY(1) translateY(0); } 100% { transform: scaleY(2.5) translateY(-1px); } }
+  @keyframes strum2 { 0% { transform: scaleY(1) translateY(0); } 100% { transform: scaleY(3) translateY(1px); } }
+  @keyframes strum3 { 0% { transform: scaleY(1); } 100% { transform: scaleY(2) translateY(-1.5px); } }
+  @keyframes strum4 { 0% { transform: scaleY(1); } 100% { transform: scaleY(3.5) translateY(1px); } }
+  @keyframes strum5 { 0% { transform: scaleY(1); } 100% { transform: scaleY(2.2); } }
+  @keyframes strum6 { 0% { transform: scaleY(1) translateY(0px); } 50% { transform: scaleY(5) translateY(-2px); } 100% { transform: scaleY(1) translateY(0px); } }
+  @keyframes strum7 { 0% { transform: scaleY(1) translateY(0px); } 50% { transform: scaleY(7) translateY(-3px); } 100% { transform: scaleY(1) translateY(0px); } }
+
+  /* === READOUT === */
+  .viz-readout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: var(--color-text-dim);
+    letter-spacing: 0.08em;
+    font-size: 0.65rem;
+  }
+
+  .readout-label {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .gain-bar {
+    color: var(--color-accent);
+    letter-spacing: -0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .viz-bar, .g-string { animation: none !important; }
+    .viz-bar { height: 20px !important; }
+  }
+</style>
+
+<script>
+  // Animate BPM counter and Hz display for slam-feel realism
+  function runVizReadout() {
+    const bpmEl = document.getElementById('viz-bpm');
+    const hzEl = document.getElementById('viz-hz');
+    if (!bpmEl || !hzEl) return;
+
+    const bpms = [82, 85, 88, 90, 86, 80, 84, 91, 88, 83];
+    const hzValues = ['41.2 Hz', '55.0 Hz', '73.4 Hz', '41.2 Hz', '87.3 Hz', '65.4 Hz'];
+    let idx = 0;
+
+    const tick = () => {
+      bpmEl.textContent = String(bpms[idx % bpms.length]);
+      hzEl.textContent = hzValues[idx % hzValues.length];
+      idx++;
+    };
+    tick();
+    const interval = setInterval(tick, 1200);
+    return () => clearInterval(interval);
+  }
+
+  let cleanup = runVizReadout();
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = runVizReadout();
+  });
+</script>

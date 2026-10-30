@@ -1,0 +1,442 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { resolvePath } from '../utils/path';
+
+const skills = [
+  {
+    category: 'AUDIO & SOUND ENGINEERING',
+    code: 'SEC-AUDIO',
+    items: ['Heavy Low-End Mixing', 'Guitar Tone Re-Amping', 'Mastering for Vinyl/Tape', 'Impulse Response Modeling', 'DAW Sound Design']
+  },
+  {
+    category: 'VISUAL & PHYSICAL PRINT',
+    code: 'SEC-VISUAL',
+    items: ['Brutalist Typography', 'Underground Zine Layout', 'Halftone & Photocopy Distress', 'Screenprint Color Separation', 'Cassette J-Card Packaging']
+  },
+  {
+    category: 'WEB & INTERFACE ARCHITECTURE',
+    code: 'SEC-TECH',
+    items: ['Astro Static Generation', 'Semantic High-Contrast HTML', 'TypeScript', 'Clean Performant CSS', 'Accessibility & Zero Bloat']
+  }
+];
+
+const timeline = [
+  {
+    year: '2026',
+    title: 'ESTABLISHED SLAM // ARCHIVE PLATFORM',
+    desc: 'Khởi tạo không gian lưu trữ số cá nhân theo chuẩn tĩnh, tối ưu hóa tốc độ và trải nghiệm đọc tập trung.'
+  },
+  {
+    year: '2025',
+    title: 'DIRECTED VISUALS FOR ABYSSAL SLAM FEST',
+    desc: 'Phụ trách toàn bộ hệ thống nhận diện, màn hình sân khấu và sản xuất 500+ áo merch in lụa.'
+  },
+  {
+    year: '2024',
+    title: 'FOUNDED BRUTAL RESONANCE ZINE COLLECTIVE',
+    desc: 'Xuất bản các ấn phẩm fanzine photocopy A5 phân phối tại các gig âm nhạc độc lập.'
+  },
+  {
+    year: '2022',
+    title: 'UNDERGROUND SOUND LAB EXPERIMENTS',
+    desc: 'Nghiên cứu kỹ thuật căn chỉnh EQ scoop và chuỗi pedal overdrive nén chặt cho dòng ghita hạ dây sâu.'
+  }
+];
+---
+
+<BaseLayout title="ABOUT & MANIFESTO" description="Thông tin cá nhân, kỹ năng, quy trình làm việc và triết lý nghệ thuật hardcore slam.">
+  <div class="about-page">
+    <div class="container">
+      <!-- About Hero -->
+      <header class="about-header">
+        <SectionHeading 
+          tag="PERSONNEL // PROFILE" 
+          title="IDENTITY & MANIFESTO" 
+          subtitle="Giới thiệu về thực hành nghệ thuật, lưu trữ âm thanh và triết lý thiết kế thô ráp."
+        />
+      </header>
+
+      <div class="about-grid">
+        <!-- Main Bio Column -->
+        <div class="bio-column">
+          <div class="bio-block bracket-box reveal-on-scroll">
+            <div class="bio-stamp-row">
+              <span class="catalog-stamp">[ OPERATOR: MAY-39 ]</span>
+              <span class="catalog-status">AVAILABLE FOR COMMISSIONS</span>
+            </div>
+
+            <h3 class="bio-heading">
+              "KHI MỌI THỨ TRỞ NÊN QUÁ BÓNG BẨY, SỰ THÔ RÁP CHÍNH LÀ LỜI PHẢN KHÁNG."
+            </h3>
+
+            <div class="bio-paragraphs">
+              <p>
+                Xin chào, tôi là <strong>[YOUR NAME / ARTIST NAME]</strong> (hoạt động với định danh <em>MAY-39</em>). Tôi là một nghệ sĩ đồ họa, kỹ sư âm thanh và lập trình viên tập trung vào văn hóa underground metal và thiết kế tương phản cao.
+              </p>
+              <p>
+                Lớn lên cùng những tờ fanzine photocopy đen trắng, các đĩa cassette rách mép và âm thanh nghẹt thở của những cú slam breakdown dồn dập, tôi tìm thấy vẻ đẹp trong những thứ bị coi là gai góc và phi quy chuẩn.
+              </p>
+              <p>
+                Trang web này hoạt động như một kho lưu trữ số mở (digital archive). Mọi sản phẩm được hiển thị đều là kết quả của quá trình lao động thực tế, không dùng template rập khuôn và luôn tôn trọng nguyên tắc DIY (Do It Yourself).
+              </p>
+            </div>
+
+            <div class="placeholder-notice">
+              <span class="notice-badge">PLACEHOLDER INFO</span>
+              <p class="notice-desc">
+                Chủ sở hữu có thể dễ dàng thay đổi tên, tiểu sử và thông tin mạng xã hội trong file <code>src/pages/about.astro</code>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Creative Workflow / Philosophy -->
+          <div class="workflow-block reveal-on-scroll">
+            <h3 class="section-subheading">CREATIVE PROTOCOL / QUY TRÌNH</h3>
+            <div class="protocol-steps">
+              <div class="step-card">
+                <span class="step-num">01</span>
+                <div class="step-content">
+                  <h4 class="step-title">DECONSTRUCT & STRIP</h4>
+                  <p class="step-desc">Loại bỏ mọi lớp trang trí rườm rà. Chỉ giữ lại khung xương thiết yếu: typography, độ tương phản và nhịp điệu hình ảnh.</p>
+                </div>
+              </div>
+              <div class="step-card">
+                <span class="step-num">02</span>
+                <div class="step-content">
+                  <h4 class="step-title">ANALOG DISTORTION</h4>
+                  <p class="step-desc">Đưa vật liệu qua các quá trình tương tác vật lý: scan quang học tốc độ cao, mực in lụa, phơi nhiễm và tạo hạt grain thực tế.</p>
+                </div>
+              </div>
+              <div class="step-card">
+                <span class="step-num">03</span>
+                <div class="step-content">
+                  <h4 class="step-title">DIGITAL PRECISION</h4>
+                  <p class="step-desc">Đóng gói thành phẩm vào nền tảng số chuẩn chỉ: mã nguồn sạch, cấu trúc ngữ nghĩa ngữ cảnh cao và hiệu năng tuyệt đối.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Milestones Timeline -->
+          <div class="timeline-block reveal-on-scroll">
+            <h3 class="section-subheading">TIMELINE & MILESTONES</h3>
+            <div class="timeline-list">
+              {timeline.map((item) => (
+                <div class="timeline-item">
+                  <div class="timeline-year">[{item.year}]</div>
+                  <div class="timeline-details">
+                    <h4 class="timeline-title">{item.title}</h4>
+                    <p class="timeline-desc">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar / Skills & Contact -->
+        <aside class="sidebar-column">
+          <!-- Skills Card -->
+          <div class="sidebar-card bracket-box reveal-on-scroll">
+            <h3 class="sidebar-title">
+              <span class="catalog-stamp">DISCIPLINE MATRIX</span>
+            </h3>
+
+            <div class="skills-sections">
+              {skills.map((sec) => (
+                <div class="skill-group">
+                  <div class="group-header">
+                    <span class="group-code">{sec.code}</span>
+                    <h4 class="group-name">{sec.category}</h4>
+                  </div>
+                  <ul class="skill-items">
+                    {sec.items.map((item) => (
+                      <li><span class="bullet">::</span> {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Contact Quick Card -->
+          <div class="sidebar-card bracket-box reveal-on-scroll">
+            <h3 class="sidebar-title">
+              <span class="catalog-stamp">COMMISSION INQUIRIES</span>
+            </h3>
+            <p class="sidebar-text">
+              Sẵn sàng hợp tác cho các dự án bìa album metal, ấn phẩm zine, thiết kế merch áo thun và website portfolio cá nhân.
+            </p>
+            <div class="sidebar-actions">
+              <a href={resolvePath('/contact/')} class="btn btn-primary full-width">
+                TRANSMIT MESSAGE →
+              </a>
+              <a href="mailto:contact@example.com" class="btn full-width">
+                MAILTO: CONTACT@EXAMPLE.COM
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: 3rem 0 6rem;
+  }
+
+  .about-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .about-grid {
+      grid-template-columns: 1.6fr 1fr;
+    }
+  }
+
+  .bio-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .bio-block {
+    padding: 2.5rem 2rem;
+  }
+
+  .bio-stamp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .catalog-status {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .bio-heading {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    line-height: 1.05;
+  }
+
+  .bio-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+
+  .bio-paragraphs strong {
+    color: var(--color-text);
+  }
+
+  .placeholder-notice {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: rgba(215, 25, 32, 0.08);
+    border: 1px dashed var(--color-accent);
+  }
+
+  .notice-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .notice-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .notice-desc code {
+    background: #181818;
+    color: var(--color-text);
+    padding: 0.1rem 0.3rem;
+  }
+
+  .section-subheading {
+    font-size: 1.8rem;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .protocol-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .step-card {
+    display: flex;
+    gap: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+  }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .step-title {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Timeline */
+  .timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-left: 2px solid var(--color-border);
+    padding-left: 1.5rem;
+  }
+
+  .timeline-item {
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.85rem;
+    top: 0.3rem;
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+  }
+
+  .timeline-year {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-title {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Sidebar */
+  .sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .sidebar-card {
+    padding: 1.75rem;
+  }
+
+  .sidebar-title {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .skills-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .group-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .group-code {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+  }
+
+  .group-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text);
+    letter-spacing: 0.05em;
+  }
+
+  .skill-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skill-items li {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .bullet {
+    color: var(--color-accent);
+  }
+
+  .sidebar-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .full-width {
+    width: 100%;
+    text-align: center;
+  }
+</style>

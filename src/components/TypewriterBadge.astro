@@ -1,0 +1,106 @@
+---
+// TypewriterBadge.astro — Terminal-style typewriter text cycling badge
+interface Props {
+  phrases: string[];
+  prefix?: string;
+  class?: string;
+}
+const { phrases, prefix = '> ', class: cls = '' } = Astro.props;
+---
+
+<div class={`typewriter-badge ${cls}`} aria-live="polite">
+  <span class="tw-prefix" aria-hidden="true">{prefix}</span>
+  <span class="tw-text" id="typewriter-text" data-phrases={JSON.stringify(phrases)}></span>
+  <span class="tw-cursor" aria-hidden="true">█</span>
+</div>
+
+<style>
+  .typewriter-badge {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    padding: 0.5rem 1rem;
+    background: #070707;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .tw-prefix {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .tw-text {
+    color: var(--color-text);
+    font-weight: 400;
+    min-width: 1ch;
+  }
+
+  .tw-cursor {
+    color: var(--color-accent);
+    animation: blink-cursor 0.75s step-end infinite;
+    margin-left: 1px;
+    font-size: 0.85em;
+  }
+
+  @keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tw-cursor { animation: none; opacity: 1; }
+  }
+</style>
+
+<script>
+  function setupTypewriters() {
+    const elements = document.querySelectorAll<HTMLElement>('#typewriter-text');
+    elements.forEach((el) => {
+      const phrases: string[] = JSON.parse(el.getAttribute('data-phrases') || '[]');
+      if (!phrases.length) return;
+
+      let phraseIdx = 0;
+      let charIdx = 0;
+      let deleting = false;
+      let timer: ReturnType<typeof setTimeout>;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        el.textContent = phrases[0];
+        return;
+      }
+
+      const type = () => {
+        const current = phrases[phraseIdx];
+        if (!deleting) {
+          el.textContent = current.slice(0, ++charIdx);
+          if (charIdx === current.length) {
+            deleting = true;
+            timer = setTimeout(type, 2200);
+            return;
+          }
+          timer = setTimeout(type, 55 + Math.random() * 30);
+        } else {
+          el.textContent = current.slice(0, --charIdx);
+          if (charIdx === 0) {
+            deleting = false;
+            phraseIdx = (phraseIdx + 1) % phrases.length;
+            timer = setTimeout(type, 350);
+            return;
+          }
+          timer = setTimeout(type, 28 + Math.random() * 15);
+        }
+      };
+      type();
+
+      return () => clearTimeout(timer);
+    });
+  }
+
+  setupTypewriters();
+  document.addEventListener('astro:after-swap', setupTypewriters);
+</script>

@@ -1,0 +1,81 @@
+---
+// SkullDecal.astro — SVG skull with glowing eye sockets, industrial cage style
+interface Props {
+  class?: string;
+  size?: number;
+}
+const { class: cls = '', size = 80 } = Astro.props;
+---
+
+<div class={`skull-decal ${cls}`} aria-hidden="true" style={`width:${size}px;height:${size}px;`}>
+  <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg" class="skull-svg">
+    <!-- Skull top / cranium -->
+    <path d="M50 5 C20 5 8 28 8 48 C8 65 18 78 30 83 L30 100 L70 100 L70 83 C82 78 92 65 92 48 C92 28 80 5 50 5 Z"
+          fill="none" stroke="#E8E4DC" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- Skull teeth ridge (mandible) -->
+    <line x1="30" y1="100" x2="70" y2="100" stroke="#E8E4DC" stroke-width="2.5"/>
+    <line x1="35" y1="100" x2="35" y2="108" stroke="#E8E4DC" stroke-width="2"/>
+    <line x1="44" y1="100" x2="44" y2="110" stroke="#E8E4DC" stroke-width="2"/>
+    <line x1="50" y1="100" x2="50" y2="108" stroke="#E8E4DC" stroke-width="2"/>
+    <line x1="56" y1="100" x2="56" y2="110" stroke="#E8E4DC" stroke-width="2"/>
+    <line x1="65" y1="100" x2="65" y2="108" stroke="#E8E4DC" stroke-width="2"/>
+
+    <!-- Left eye socket (glowing) -->
+    <ellipse cx="35" cy="52" rx="12" ry="13"
+             fill="#D71920" fill-opacity="0.12" stroke="#D71920" stroke-width="2"/>
+    <ellipse cx="35" cy="52" rx="6" ry="7"
+             fill="#D71920" opacity="0.7" class="eye-glow"/>
+
+    <!-- Right eye socket (glowing) -->
+    <ellipse cx="65" cy="52" rx="12" ry="13"
+             fill="#D71920" fill-opacity="0.12" stroke="#D71920" stroke-width="2"/>
+    <ellipse cx="65" cy="52" rx="6" ry="7"
+             fill="#D71920" opacity="0.7" class="eye-glow eye-glow-r"/>
+
+    <!-- Nose cavity -->
+    <path d="M47 66 L50 60 L53 66 L51 70 L49 70 Z"
+          fill="none" stroke="#9A968F" stroke-width="1.5"/>
+
+    <!-- Crack details for distress texture -->
+    <path d="M50 10 L48 20 M50 10 L52 18" stroke="#9A968F" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M20 42 L28 48" stroke="#9A968F" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M80 38 L72 46" stroke="#9A968F" stroke-width="0.8" stroke-linecap="round"/>
+
+    <!-- X marks over eyes (death mark) -->
+    <line x1="30" y1="47" x2="40" y2="57" stroke="#D71920" stroke-width="1.2" opacity="0.6"/>
+    <line x1="40" y1="47" x2="30" y2="57" stroke="#D71920" stroke-width="1.2" opacity="0.6"/>
+    <line x1="60" y1="47" x2="70" y2="57" stroke="#D71920" stroke-width="1.2" opacity="0.6"/>
+    <line x1="70" y1="47" x2="60" y2="57" stroke="#D71920" stroke-width="1.2" opacity="0.6"/>
+  </svg>
+</div>
+
+<style>
+  .skull-decal {
+    position: relative;
+    display: inline-block;
+  }
+
+  .skull-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 6px rgba(215, 25, 32, 0.35));
+  }
+
+  .eye-glow {
+    animation: pulse-eye 2.1s ease-in-out infinite;
+  }
+
+  .eye-glow-r {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes pulse-eye {
+    0%, 100% { opacity: 0.3; r: 5px; }
+    50%       { opacity: 1;   r: 8px; filter: url(#glow); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eye-glow { animation: none; opacity: 0.7; }
+  }
+</style>

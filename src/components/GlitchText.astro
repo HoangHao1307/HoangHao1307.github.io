@@ -1,0 +1,112 @@
+---
+// GlitchText.astro — Brutal glitch flicker effect for hero text
+interface Props {
+  text: string;
+  tag?: 'h1' | 'h2' | 'h3' | 'span' | 'div';
+  class?: string;
+  intensity?: 'low' | 'medium' | 'high';
+}
+const { text, tag: Tag = 'span', class: cls = '', intensity = 'medium' } = Astro.props;
+---
+
+<Tag class={`glitch-text glitch-${intensity} ${cls}`} data-text={text}>
+  <span class="glitch-main">{text}</span>
+  <span class="glitch-layer gl1" aria-hidden="true">{text}</span>
+  <span class="glitch-layer gl2" aria-hidden="true">{text}</span>
+</Tag>
+
+<style>
+  .glitch-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch-main {
+    position: relative;
+    z-index: 1;
+  }
+
+  .glitch-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Layer 1 — red shift */
+  .gl1 {
+    color: var(--color-accent);
+    z-index: 2;
+    animation: glitch-l1-medium 4s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+  }
+
+  /* Layer 2 — cyan/white shift */
+  .gl2 {
+    color: #9bf8f4;
+    z-index: 3;
+    animation: glitch-l2-medium 4s infinite;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  }
+
+  /* Intensity variants */
+  .glitch-low .gl1 { animation-name: glitch-l1-low; }
+  .glitch-low .gl2 { animation-name: glitch-l2-low; }
+  .glitch-high .gl1 { animation-name: glitch-l1-high; }
+  .glitch-high .gl2 { animation-name: glitch-l2-high; }
+
+  /* Medium animations (default) */
+  @keyframes glitch-l1-medium {
+    0%, 88%, 92%, 100% { transform: translate(0); opacity: 0; }
+    89%                 { transform: translate(-4px, 2px); opacity: 0.75; clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%); }
+    90%                 { transform: translate(4px, -2px); opacity: 0.5; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+    91%                 { transform: translate(-3px, 0); opacity: 0.8; clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%); }
+  }
+
+  @keyframes glitch-l2-medium {
+    0%, 86%, 93%, 100% { transform: translate(0); opacity: 0; }
+    87%                 { transform: translate(4px, -1px); opacity: 0.6; clip-path: polygon(0 50%, 100% 50%, 100% 75%, 0 75%); }
+    88%                 { transform: translate(-5px, 2px); opacity: 0.7; clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%); }
+    92%                 { transform: translate(3px, 0); opacity: 0.5; clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+  }
+
+  /* Low intensity */
+  @keyframes glitch-l1-low {
+    0%, 95%, 100% { transform: translate(0); opacity: 0; }
+    96%            { transform: translate(-2px, 1px); opacity: 0.4; clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+    97%            { transform: translate(2px, -1px); opacity: 0.3; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  }
+
+  @keyframes glitch-l2-low {
+    0%, 94%, 100% { transform: translate(0); opacity: 0; }
+    95%            { transform: translate(2px, 0); opacity: 0.35; clip-path: polygon(0 55%, 100% 55%, 100% 75%, 0 75%); }
+    96%            { transform: translate(-2px, 1px); opacity: 0.25; }
+  }
+
+  /* High intensity */
+  @keyframes glitch-l1-high {
+    0%, 78%, 82%, 85%, 88%, 100% { transform: translate(0); opacity: 0; }
+    79%   { transform: translate(-6px, 3px); opacity: 0.9; clip-path: polygon(0 5%, 100% 5%, 100% 38%, 0 38%); }
+    80%   { transform: translate(7px, -3px); opacity: 0.8; clip-path: polygon(0 55%, 100% 55%, 100% 82%, 0 82%); }
+    81%   { transform: translate(-4px, 1px); opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 22%, 0 22%); }
+    83%   { transform: translate(5px, -2px); opacity: 0.7; clip-path: polygon(0 70%, 100% 70%, 100% 95%, 0 95%); }
+    84%   { transform: translate(-7px, 3px); opacity: 0.85; clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%); }
+    86%   { transform: translate(3px, 0); opacity: 0.6; clip-path: polygon(0 45%, 100% 45%, 100% 68%, 0 68%); }
+    87%   { transform: translate(-5px, -2px); opacity: 0.9; clip-path: polygon(0 10%, 100% 10%, 100% 35%, 0 35%); }
+  }
+
+  @keyframes glitch-l2-high {
+    0%, 76%, 83%, 87%, 91%, 100% { transform: translate(0); opacity: 0; }
+    77%   { transform: translate(7px, -2px); opacity: 0.8; clip-path: polygon(0 60%, 100% 60%, 100% 90%, 0 90%); }
+    78%   { transform: translate(-6px, 3px); opacity: 0.75; clip-path: polygon(0 40%, 100% 40%, 100% 65%, 0 65%); }
+    80%   { transform: translate(5px, -1px); opacity: 0.9; clip-path: polygon(0 75%, 100% 75%, 100% 100%, 0 100%); }
+    82%   { transform: translate(-4px, 2px); opacity: 0.7; clip-path: polygon(0 20%, 100% 20%, 100% 48%, 0 48%); }
+    85%   { transform: translate(6px, 0); opacity: 0.85; clip-path: polygon(0 55%, 100% 55%, 100% 78%, 0 78%); }
+    88%   { transform: translate(-8px, 3px); opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 25%, 0 25%); }
+    90%   { transform: translate(4px, -2px); opacity: 0.65; clip-path: polygon(0 65%, 100% 65%, 100% 88%, 0 88%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glitch-layer { display: none; }
+  }
+</style>

@@ -1,0 +1,421 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ScrollProgress from '../components/ScrollProgress.astro';
+import Tag from '../components/Tag.astro';
+import { resolvePath } from '../utils/path';
+import { formatDate } from '../utils/date';
+
+interface Props {
+  post: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      pubDate: Date;
+      updatedDate?: Date;
+      tags: string[];
+      draft?: boolean;
+      cover?: string;
+    };
+  };
+  readingTime: string;
+  prevPost?: { id: string; data: { title: string } } | null;
+  nextPost?: { id: string; data: { title: string } } | null;
+  relatedPosts?: Array<{ id: string; data: { title: string; pubDate: Date } }>;
+}
+
+const { post, readingTime, prevPost, nextPost, relatedPosts = [] } = Astro.props;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} article={true}>
+  <ScrollProgress />
+
+  <article class="post-detail-view">
+    <div class="content-container">
+      <!-- Back Link -->
+      <div class="back-nav">
+        <a href={resolvePath('/posts/')} class="back-link">
+          <span class="arrow-back">←</span> BACK TO ARCHIVE
+        </a>
+      </div>
+
+      <!-- Post Header -->
+      <header class="post-header bracket-box">
+        <div class="header-stamp-row">
+          <span class="catalog-stamp">[ POST // REF: {post.id} ]</span>
+          <div class="header-meta-items">
+            <time datetime={post.data.pubDate.toISOString()} class="meta-date">
+              PUBLISHED: {formatDate(post.data.pubDate)}
+            </time>
+            {post.data.updatedDate && (
+              <span class="meta-updated">
+                // UPDATED: {formatDate(post.data.updatedDate)}
+              </span>
+            )}
+            <span class="meta-dot">·</span>
+            <span class="meta-read">{readingTime}</span>
+          </div>
+        </div>
+
+        <h1 class="post-title">{post.data.title}</h1>
+
+        <p class="post-lead-desc">{post.data.description}</p>
+
+        <div class="post-tags-row">
+          <span class="tags-label">TAGS:</span>
+          {post.data.tags.map((tag: string) => (
+            <Tag tag={tag} />
+          ))}
+        </div>
+      </header>
+
+      <!-- Markdown Body -->
+      <div class="markdown-body">
+        <slot />
+      </div>
+
+      <!-- Post Navigation (Prev / Next) -->
+      <nav class="post-nav-strip" aria-label="Article pagination">
+        {prevPost ? (
+          <a href={resolvePath(`/posts/${prevPost.id}/`)} class="nav-prev">
+            <span class="nav-direction">← PREVIOUS ENTRY</span>
+            <span class="nav-post-title">{prevPost.data.title}</span>
+          </a>
+        ) : <div class="nav-empty"></div>}
+
+        {nextPost ? (
+          <a href={resolvePath(`/posts/${nextPost.id}/`)} class="nav-next">
+            <span class="nav-direction">NEXT ENTRY →</span>
+            <span class="nav-post-title">{nextPost.data.title}</span>
+          </a>
+        ) : <div class="nav-empty"></div>}
+      </nav>
+
+      <!-- Related Posts -->
+      {relatedPosts.length > 0 && (
+        <section class="related-section">
+          <h3 class="related-title">
+            <span class="catalog-stamp">RELATED ARCHIVES</span>
+          </h3>
+          <ul class="related-list">
+            {relatedPosts.map((rel) => (
+              <li>
+                <a href={resolvePath(`/posts/${rel.id}/`)} class="related-link">
+                  <span class="related-bullet">::</span>
+                  <span class="related-name">{rel.data.title}</span>
+                  <time class="related-date">{formatDate(rel.data.pubDate)}</time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-detail-view {
+    padding: 3rem 0 5rem;
+  }
+
+  .back-nav {
+    margin-bottom: 1.5rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .arrow-back {
+    color: var(--color-accent);
+  }
+
+  .post-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .header-stamp-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .header-stamp-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .header-meta-items {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .meta-dot {
+    color: var(--color-text-dim);
+  }
+
+  .meta-read {
+    color: var(--color-text-muted);
+  }
+
+  .post-title {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .post-lead-desc {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .post-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border);
+  }
+
+  .tags-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+  }
+
+  /* Markdown body typography */
+  .markdown-body {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 4rem;
+  }
+
+  .markdown-body :global(h2) {
+    font-size: 2.2rem;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .markdown-body :global(h3) {
+    font-size: 1.6rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    color: var(--color-text);
+  }
+
+  .markdown-body :global(p) {
+    margin-bottom: 1.5rem;
+    color: #cfcac0;
+  }
+
+  .markdown-body :global(ul), .markdown-body :global(ol) {
+    margin-bottom: 1.75rem;
+    padding-left: 1.5rem;
+    color: #cfcac0;
+  }
+
+  .markdown-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .markdown-body :global(blockquote) {
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-accent);
+    color: var(--color-text);
+    font-style: italic;
+  }
+
+  .markdown-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: #181818;
+    color: #ff6e74;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .markdown-body :global(pre) {
+    background: #060606 !important;
+    border: 1px solid var(--color-border);
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1.75rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .markdown-body :global(pre code) {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: #e8e4dc;
+  }
+
+  .markdown-body :global(hr) {
+    border: 0;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--color-border), var(--color-border) 4px, transparent 4px, transparent 8px);
+    margin: 3rem 0;
+  }
+
+  .markdown-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+    font-family: var(--font-mono);
+  }
+
+  .markdown-body :global(th), .markdown-body :global(td) {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .markdown-body :global(th) {
+    background: var(--color-surface);
+    color: var(--color-accent);
+  }
+
+  .markdown-body :global(tr:nth-child(even)) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .markdown-body :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Post Navigation */
+  .post-nav-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    border-top: 2px solid var(--color-border);
+    border-bottom: 2px solid var(--color-border);
+    padding: 2rem 0;
+    margin-bottom: 3.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .post-nav-strip {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .nav-prev, .nav-next {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-fast);
+  }
+
+  .nav-prev:hover, .nav-next:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-hover);
+  }
+
+  .nav-next {
+    text-align: right;
+  }
+
+  .nav-direction {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  .nav-post-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-text);
+  }
+
+  /* Related section */
+  .related-section {
+    padding-top: 1rem;
+  }
+
+  .related-title {
+    margin-bottom: 1.25rem;
+  }
+
+  .related-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .related-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+  }
+
+  .related-bullet {
+    color: var(--color-accent);
+  }
+
+  .related-name {
+    flex-grow: 1;
+    color: var(--color-text);
+  }
+
+  .related-date {
+    color: var(--color-text-dim);
+    font-size: 0.75rem;
+  }
+
+  .related-link:hover {
+    border-color: var(--color-accent);
+    transform: translateX(4px);
+  }
+</style>

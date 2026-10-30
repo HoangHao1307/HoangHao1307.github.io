@@ -1,0 +1,61 @@
+---
+// CRTOverlay.astro — Scanline + phosphor glow CRT effect as full-page layer
+---
+
+<div class="crt-overlay" aria-hidden="true">
+  <div class="crt-scanlines"></div>
+  <div class="crt-vignette"></div>
+  <div class="crt-flicker"></div>
+</div>
+
+<style>
+  .crt-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Horizontal scanlines */
+  .crt-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.06) 2px,
+      rgba(0, 0, 0, 0.06) 3px
+    );
+  }
+
+  /* Vignette darkening at edges */
+  .crt-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 50%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+  }
+
+  /* Subtle flicker on the entire screen — VERY subtle to not cause motion issues */
+  .crt-flicker {
+    position: absolute;
+    inset: 0;
+    animation: crt-screen-flicker 8s step-end infinite;
+    background: transparent;
+  }
+
+  @keyframes crt-screen-flicker {
+    0%, 97%, 99%, 100% { opacity: 1; }
+    98%                  { opacity: 0.92; }
+    98.5%                { opacity: 0.98; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt-flicker { animation: none; }
+  }
+</style>

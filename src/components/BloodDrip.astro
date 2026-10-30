@@ -1,0 +1,56 @@
+---
+// BloodDrip.astro — CSS animated blood drip effect, horizontal strip
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+---
+
+<div class={`blood-drip-strip ${cls}`} aria-hidden="true">
+  {Array.from({ length: 14 }).map((_, i) => (
+    <div class="drip" style={`--d:${i};`}></div>
+  ))}
+</div>
+
+<style>
+  .blood-drip-strip {
+    display: flex;
+    align-items: flex-start;
+    height: 40px;
+    overflow: visible;
+    gap: 0;
+    width: 100%;
+    pointer-events: none;
+    position: relative;
+  }
+
+  .drip {
+    flex: 1;
+    position: relative;
+  }
+
+  .drip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(4px + var(--d, 0) * 1.5px);
+    background: linear-gradient(180deg, #D71920 0%, #8B0000 70%, transparent 100%);
+    border-radius: 0 0 50% 50%;
+    animation: drip-fall calc(1.2s + var(--d, 0) * 0.15s) ease-in calc(var(--d, 0) * 0.09s) infinite;
+    transform-origin: top center;
+  }
+
+  @keyframes drip-fall {
+    0%   { height: 0px; opacity: 0; }
+    10%  { opacity: 1; }
+    50%  { height: calc(16px + var(--d, 0) * 2px); }
+    85%  { height: calc(16px + var(--d, 0) * 2px); opacity: 0.9; }
+    100% { height: 0px; opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drip::before { animation: none; height: 8px; opacity: 0.4; }
+  }
+</style>

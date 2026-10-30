@@ -1,0 +1,689 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PostCard from '../components/PostCard.astro';
+import GlitchText from '../components/GlitchText.astro';
+import GuitarVisualizer from '../components/GuitarVisualizer.astro';
+import SkullDecal from '../components/SkullDecal.astro';
+import TypewriterBadge from '../components/TypewriterBadge.astro';
+import BloodDrip from '../components/BloodDrip.astro';
+import { getCollection } from 'astro:content';
+import { resolvePath } from '../utils/path';
+import { getReadingTime } from '../utils/readingTime';
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .slice(0, 3);
+
+const isDev = import.meta.env.DEV;
+const allPosts = await getCollection('posts');
+const publicPosts = allPosts
+  .filter((post) => isDev || !post.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const latestPosts = publicPosts.slice(0, 3);
+---
+
+<BaseLayout title="SLAM // ARCHIVE" description="Brutalist portfolio & underground music zine archive. Low-end heavy, high contrast.">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero-section">
+
+    <!-- Decorative halftone BG patch -->
+    <div class="hero-halftone-patch" aria-hidden="true"></div>
+
+    <!-- Animated red horizontal scan line -->
+    <div class="hero-scan-line" aria-hidden="true"></div>
+
+    <div class="container hero-container">
+
+      <!-- Status strip with typewriter -->
+      <div class="hero-status-row animate-enter-down delay-1">
+        <div class="hero-live-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="live-label">LIVE ARCHIVE</span>
+        </div>
+        <TypewriterBadge
+          phrases={[
+            'BRUTALIST DESIGN OPERATOR',
+            'UNDERGROUND SOUND ENGINEER',
+            'SLAM DEATH CULTURE ARCHIVIST',
+            'HARDCORE FANZINE AUTHOR',
+            'INDEPENDENT — AVAILABLE NOW',
+          ]}
+          prefix="STATUS: "
+        />
+        <div class="hero-catalog-ref animate-fade delay-2">
+          <span class="barcode-strip">|||| ||| ||||| |</span>
+          <span class="cat-num">CAT.NO. SLAM-2026</span>
+        </div>
+      </div>
+
+      <!-- Hero grid: typography + skull -->
+      <div class="hero-grid animate-enter-up delay-2">
+
+        <!-- TITLE COLUMN -->
+        <div class="hero-title-col">
+          <div class="title-row-wrap">
+            <span class="title-ordinal animate-fade delay-3">01/</span>
+            <GlitchText text="BRUTALIST" tag="div" class="hero-title-line main-word" intensity="medium" />
+          </div>
+          <div class="title-row-wrap outline-row">
+            <GlitchText text="HEAVINESS" tag="div" class="hero-title-line outline-word" intensity="low" />
+          </div>
+          <div class="title-row-wrap red-row">
+            <span class="red-title-line animate-enter-up delay-4">&amp;&nbsp;ARCHIVE</span>
+          </div>
+        </div>
+
+        <!-- SKULL + VISUALIZER COLUMN -->
+        <div class="hero-side-col animate-fade delay-3">
+          <div class="skull-frame bracket-box">
+            <div class="skull-frame-inner">
+              <SkullDecal size={120} />
+              <div class="skull-labels">
+                <span class="skull-tag">MEMENTO MORI</span>
+                <span class="skull-year">MMX-XXVI</span>
+              </div>
+            </div>
+            <div class="frame-screws" aria-hidden="true">
+              <span class="screw">✦</span>
+              <span class="screw">✦</span>
+              <span class="screw">✦</span>
+              <span class="screw">✦</span>
+            </div>
+          </div>
+
+          <GuitarVisualizer />
+        </div>
+
+      </div>
+
+      <!-- Hero bio + actions -->
+      <div class="hero-lower animate-enter-up delay-4">
+
+        <!-- Tagline description -->
+        <div class="hero-bio bracket-box">
+          <p class="hero-bio-text">
+            <strong>[YOUR NAME / ARTIST NAME]</strong> — Nhà thiết kế ấn phẩm underground, kỹ sư âm thanh &amp; lập trình viên giao diện. Giao điểm của <em>photocopy zine</em>, <em>extreme metal</em> và <em>brutalist web design</em>.
+          </p>
+          <div class="hero-pill-row">
+            <span class="pill">:: INDEPENDENT</span>
+            <span class="pill">:: HIGH CONTRAST</span>
+            <span class="pill">:: DIY SINCE 2019</span>
+            <span class="pill pill-red">:: AVAILABLE FOR COMMISSIONS</span>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="hero-actions">
+          <a href={resolvePath('/projects/')} class="btn btn-primary hero-cta-btn animate-enter-up delay-5">
+            <span class="btn-icon-prefix">▶</span> EXPLORE WORKS
+          </a>
+          <a href={resolvePath('/posts/')} class="btn hero-cta-btn animate-enter-up delay-6">
+            READ THE ARCHIVE →
+          </a>
+          <a href={resolvePath('/contact/')} class="btn hero-cta-btn animate-fade delay-6">
+            TRANSMIT MESSAGE
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Terminal block: system readout -->
+      <div class="hero-terminal terminal-block animate-fade delay-6">
+        <span class="t-line"><span class="t-prompt">$ </span><span>npx astro build --hardcore-slam-mode</span></span>
+        <span class="t-line"><span class="t-dim">  ├─ content collections synced</span></span>
+        <span class="t-line"><span class="t-dim">  ├─ typography engine: BEBAS NEUE ×</span><span class="t-ok"> LOADED</span></span>
+        <span class="t-line"><span class="t-dim">  ├─ css noise grain:</span><span class="t-ok"> ACTIVE</span></span>
+        <span class="t-line"><span class="t-dim">  ├─ guitar freq visualizer:</span><span class="t-ok"> RUNNING</span></span>
+        <span class="t-line"><span class="t-dim">  ├─ glitch engine:</span><span class="t-ok"> ONLINE</span></span>
+        <span class="t-line"><span class="t-dim">  └─ </span><span>{publicPosts.length} posts ·</span><span> {allProjects.length} projects</span><span class="t-ok"> · SLAM BUILD COMPLETE ✓</span></span>
+      </div>
+
+    </div>
+
+    <!-- Blood drip at base of hero -->
+    <BloodDrip />
+  </section>
+
+  <!-- ================= FEATURED WORKS ================= -->
+  <section class="home-section">
+    <div class="container">
+      <div class="section-top-flex">
+        <SectionHeading
+          tag="SELECTED WORKS // 01"
+          title="FEATURED COMMISSIONS"
+          subtitle="Bìa album, ấn phẩm in lụa zine và nền tảng số độc lập được giám tuyển."
+        />
+        <a href={resolvePath('/projects/')} class="btn section-more-btn">
+          ALL PROJECTS ({allProjects.length}) ↗
+        </a>
+      </div>
+
+      <div class="projects-grid">
+        {featuredProjects.map((project, index) => (
+          <div class={`reveal-on-scroll stagger-${index + 1}`}>
+            <ProjectCard project={project} index={index} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LATEST POSTS ================= -->
+  <section class="home-section posts-bg-section">
+    <div class="container">
+      <div class="section-top-flex">
+        <SectionHeading
+          tag="TRANSMISSIONS // 02"
+          title="LATEST ARCHIVE LOGS"
+          subtitle="Ghi chép về kỹ thuật phòng thu, typography underground và văn hóa fanzine."
+        />
+        <a href={resolvePath('/posts/')} class="btn section-more-btn">
+          VIEW ALL POSTS ({publicPosts.length}) →
+        </a>
+      </div>
+
+      <div class="posts-grid">
+        {latestPosts.map((post, index) => (
+          <div class={`reveal-on-scroll stagger-${index + 1}`}>
+            <PostCard
+              post={post}
+              index={index}
+              readingTime={getReadingTime(post.body || '')}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MANIFESTO ================= -->
+  <section class="home-section manifesto-section">
+    <div class="container">
+      <div class="manifesto-card bracket-box reveal-on-scroll">
+        <div class="manifesto-top-strip">
+          <span class="catalog-stamp">[ MANIFESTO // 03 ]</span>
+          <div class="manifesto-skulls" aria-hidden="true">
+            <SkullDecal size={36} />
+            <SkullDecal size={36} />
+            <SkullDecal size={36} />
+          </div>
+          <span class="barcode-strip" aria-hidden="true">|||| |||||| |||</span>
+        </div>
+
+        <!-- Red glow divider -->
+        <div class="glow-divider manifesto-divider"></div>
+
+        <GlitchText
+          text='"SỰ THÔ RÁP CHÍNH LÀ LỜI PHẢN KHÁNG."'
+          tag="h3"
+          class="manifesto-heading"
+          intensity="low"
+        />
+
+        <div class="manifesto-columns">
+          <p class="manifesto-text">
+            Mỗi ấn phẩm, bìa đĩa hay giao diện web tại đây tuân thủ triết lý thô ráp: ưu tiên typography dày dặn, cấu trúc lưới vững chắc và loại bỏ hoàn toàn các trang trí vô nghĩa.
+          </p>
+          <p class="manifesto-text">
+            Tôi tiếp cận thiết kế bằng góc nhìn của người chơi nhạc hardcore slam — mọi nhịp đập phải có trọng lượng, rõ ràng và để lại dư chấn lâu dài.
+          </p>
+        </div>
+
+        <div class="manifesto-footer">
+          <a href={resolvePath('/about/')} class="btn btn-primary">
+            READ FULL PROFILE & SKILLS ↗
+          </a>
+          <a href={resolvePath('/contact/')} class="btn">
+            INITIATE CONTACT / COMMISSIONS →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ===========================
+     HERO
+     =========================== */
+  .hero-section {
+    padding-top: 3.5rem;
+    padding-bottom: 0;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-halftone-patch {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 380px;
+    height: 380px;
+    background-image: radial-gradient(circle, rgba(215,25,32,0.1) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-accent) 50%, transparent 100%);
+    box-shadow: 0 0 10px var(--color-accent-glow);
+    animation: scan-sweep 6s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  @keyframes scan-sweep {
+    0%   { transform: translateY(0); opacity: 0; }
+    5%   { opacity: 0.7; }
+    95%  { opacity: 0.7; }
+    100% { transform: translateY(80vh); opacity: 0; }
+  }
+
+  .hero-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-live-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(215,25,32,0.12);
+    border: 1px solid var(--color-accent);
+    padding: 0.3rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--color-accent);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .hero-catalog-ref {
+    margin-left: auto;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-dim);
+  }
+
+  @media (min-width: 680px) { .hero-catalog-ref { display: flex; } }
+
+  .cat-num { letter-spacing: 0.1em; color: var(--color-accent); font-weight: 700; }
+
+  /* Hero grid layout */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: end;
+    }
+  }
+
+  /* Title */
+  .hero-title-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .title-row-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .title-ordinal {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    align-self: flex-start;
+    padding-top: 0.5rem;
+  }
+
+  .hero-title-line {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 0.88;
+    display: block;
+  }
+
+  .main-word { color: var(--color-text); }
+
+  .outline-row { padding-left: 2.5rem; }
+  .outline-word {
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(232,228,220,0.55);
+  }
+
+  .red-title-line {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 0.88;
+    color: var(--color-accent);
+    text-shadow: 3px 3px 0 #1a0000, 0 0 30px rgba(215,25,32,0.35);
+  }
+
+  /* Skull frame */
+  .hero-side-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .skull-frame {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    background: linear-gradient(135deg, #0e0e0e, #141414);
+    box-shadow: inset 0 0 30px rgba(215,25,32,0.04), 0 0 0 1px var(--color-border);
+  }
+
+  .skull-frame-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .skull-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .skull-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .skull-year {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .frame-screws {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .screw {
+    position: absolute;
+    font-size: 0.5rem;
+    color: var(--color-text-dim);
+    animation: screw-glint 3s ease-in-out infinite;
+  }
+
+  .screw:nth-child(1) { top: 6px; left: 8px; }
+  .screw:nth-child(2) { top: 6px; right: 8px; animation-delay: 0.5s; }
+  .screw:nth-child(3) { bottom: 6px; left: 8px; animation-delay: 1s; }
+  .screw:nth-child(4) { bottom: 6px; right: 8px; animation-delay: 1.5s; }
+
+  @keyframes screw-glint {
+    0%, 100% { color: var(--color-text-dim); }
+    50% { color: var(--color-accent); }
+  }
+
+  /* Lower hero row */
+  .hero-lower {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 860px) {
+    .hero-lower {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+    }
+  }
+
+  .hero-bio {
+    padding: 1.5rem;
+  }
+
+  .hero-bio-text {
+    font-size: 1.05rem;
+    color: var(--color-text);
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-bio-text strong { color: var(--color-accent); }
+  .hero-bio-text em { color: var(--color-text-muted); font-style: normal; border-bottom: 1px dashed var(--color-border-strong); }
+
+  .hero-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.22rem 0.55rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  .pill-red {
+    color: var(--color-accent);
+    border-color: rgba(215,25,32,0.4);
+    background: rgba(215,25,32,0.08);
+    animation: pulse-border 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-border {
+    0%, 100% { border-color: rgba(215,25,32,0.3); }
+    50%       { border-color: rgba(215,25,32,0.9); box-shadow: 0 0 8px rgba(215,25,32,0.3); }
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hero-cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .btn-icon-prefix {
+    color: #fff;
+    font-size: 0.7rem;
+  }
+
+  /* Terminal block */
+  .hero-terminal {
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===========================
+     HOME SECTIONS
+     =========================== */
+  .home-section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+  }
+
+  .posts-bg-section {
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 79px,
+      rgba(255,255,255,0.012) 79px,
+      rgba(255,255,255,0.012) 80px
+    );
+  }
+
+  .section-top-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-top-flex {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+
+  .section-more-btn {
+    align-self: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .section-more-btn { align-self: auto; margin-bottom: 2.5rem; }
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 820px) { .posts-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ===========================
+     MANIFESTO
+     =========================== */
+  .manifesto-section {
+    border-bottom: none;
+  }
+
+  .manifesto-card {
+    padding: 2.5rem;
+  }
+
+  .manifesto-top-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--color-border);
+    margin-bottom: 1rem;
+  }
+
+  .manifesto-skulls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .manifesto-divider {
+    margin-bottom: 1.75rem;
+  }
+
+  .manifesto-heading {
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    line-height: 1.05;
+  }
+
+  .manifesto-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) { .manifesto-columns { grid-template-columns: 1fr 1fr; } }
+
+  .manifesto-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+
+  .manifesto-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--color-border);
+  }
+</style>

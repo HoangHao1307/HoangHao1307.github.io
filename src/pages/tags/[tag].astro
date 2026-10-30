@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { resolvePath } from '../../utils/path';
+import { getReadingTime } from '../../utils/readingTime';
+
+export async function getStaticPaths() {
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('posts');
+  const validPosts = posts.filter((p) => isDev || !p.data.draft);
+
+  const uniqueTags = new Set<string>();
+  validPosts.forEach((post) => {
+    post.data.tags.forEach((tag: string) => uniqueTags.add(tag));
+  });
+
+  return Array.from(uniqueTags).map((tag) => {
+    const filteredPosts = validPosts
+      .filter((post) => post.data.tags.includes(tag))
+      .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+    return {
+      params: { tag },
+      props: { tag, posts: filteredPosts },
+    };
+  });
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`TAG: #${tag}`} description={`Danh sách các bài viết thuộc chủ đề #${tag}`}>
+  <div class="tag-archive-page">
+    <div class="container">
+      <div class="back-nav">
+        <a href={resolvePath('/posts/')} class="back-link">
+          ← BACK TO ALL TRANSMISSIONS
+        </a>
+      </div>
+
+      <SectionHeading 
+        tag={`ARCHIVE FILTER // #${tag.toUpperCase()}`} 
+        title={`TAG: #${tag}`} 
+        subtitle={`Tìm thấy ${posts.length} bài viết gắn nhãn #${tag}.`}
+      />
+
+      <div class="posts-grid">
+        {posts.map((post, index) => (
+          <PostCard 
+            post={post} 
+            index={index} 
+            readingTime={getReadingTime(post.body || '')} 
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .tag-archive-page {
+    padding: 3rem 0 6rem;
+  }
+
+  .back-nav {
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

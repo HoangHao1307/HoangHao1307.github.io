@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getReadingTime } from '../../utils/readingTime';
+
+export async function getStaticPaths() {
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('posts');
+  const filtered = posts
+    .filter((post) => isDev || !post.data.draft)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+  return filtered.map((post, index) => {
+    const nextPost = index > 0 ? filtered[index - 1] : null;
+    const prevPost = index < filtered.length - 1 ? filtered[index + 1] : null;
+
+    // Find up to 3 related posts sharing at least one tag
+    const relatedPosts = filtered
+      .filter((p) => p.id !== post.id && p.data.tags.some((t: string) => post.data.tags.includes(t)))
+      .slice(0, 3);
+
+    return {
+      params: { slug: post.id },
+      props: { post, prevPost, nextPost, relatedPosts },
+    };
+  });
+}
+
+const { post, prevPost, nextPost, relatedPosts } = Astro.props;
+const { Content } = await render(post);
+const readingTime = getReadingTime(post.body || '');
+---
+
+<PostLayout 
+  post={post} 
+  readingTime={readingTime} 
+  prevPost={prevPost} 
+  nextPost={nextPost} 
+  relatedPosts={relatedPosts}
+>
+  <Content />
+</PostLayout>

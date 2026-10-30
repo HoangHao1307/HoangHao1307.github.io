@@ -1,0 +1,36 @@
+---
+import { resolvePath } from '../utils/path';
+
+interface Props {
+  tag: string;
+  active?: boolean;
+  count?: number;
+}
+
+const { tag, active = false, count } = Astro.props;
+---
+
+<a 
+  href={resolvePath(`/tags/${encodeURIComponent(tag)}/`)} 
+  class={`tag-badge ${active ? 'active' : ''}`}
+>
+  <span class="tag-hash">#</span>
+  <span class="tag-text">{tag}</span>
+  {typeof count === 'number' && <span class="tag-count">({count})</span>}
+</a>
+
+<style>
+  .tag-hash {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .tag-badge.active .tag-hash {
+    color: #fff;
+  }
+
+  .tag-count {
+    opacity: 0.6;
+    font-size: 0.85em;
+  }
+</style>

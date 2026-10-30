@@ -1,0 +1,319 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+---
+
+<BaseLayout title="CONTACT & TRANSMISSION" description="Kênh liên hệ trực tiếp cho các dự án bìa album, fanzine và lập trình web.">
+  <div class="contact-page">
+    <div class="container">
+      <SectionHeading 
+        tag="TRANSMISSION // CHANNEL 01" 
+        title="COMMISSIONS & SIGNALS" 
+        subtitle="Mọi liên hệ hợp tác, thiết kế ấn phẩm và thảo luận kỹ thuật."
+      />
+
+      <div class="contact-grid">
+        <!-- Direct Channel Card -->
+        <div class="contact-card bracket-box reveal-on-scroll">
+          <div class="card-status-bar">
+            <span class="catalog-stamp">[ DIRECT ENCRYPTED SIGNAL ]</span>
+            <span class="status-online">CHANNEL READY</span>
+          </div>
+
+          <h3 class="contact-heading">TRANSMIT DIRECTLY</h3>
+
+          <p class="contact-desc">
+            Không cần form trung gian phức tạp. Cách nhanh nhất để trao đổi là gửi email trực tiếp hoặc liên hệ qua các kênh mạng xã hội bên dưới.
+          </p>
+
+          <div class="email-box">
+            <span class="email-label">PRIMARY INBOX:</span>
+            <div class="email-display-row">
+              <code class="email-text" id="target-email">contact@example.com</code>
+              <button type="button" class="btn btn-copy" id="copy-email-btn" title="Copy to clipboard">
+                <span id="copy-btn-text">COPY EMAIL</span>
+              </button>
+            </div>
+            <a href="mailto:contact@example.com" class="btn btn-primary full-width-btn">
+              OPEN IN MAIL CLIENT (MAILTO) ↗
+            </a>
+          </div>
+
+          <div class="placeholder-alert">
+            <span class="alert-tag">[PLACEHOLDER NOTICE]</span>
+            <p>
+              Email và tài khoản mạng xã hội trên trang này hiện là dữ liệu minh họa. Hãy thay đổi bằng địa chỉ thực của bạn trong <code>src/pages/contact.astro</code>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Social & Transmission Guidelines -->
+        <div class="guidelines-card bracket-box reveal-on-scroll">
+          <div class="card-status-bar">
+            <span class="catalog-stamp">[ NETWORK PROTOCOLS ]</span>
+          </div>
+
+          <h3 class="contact-heading">OFFICIAL CHANNELS</h3>
+
+          <ul class="social-channels-list">
+            <li class="channel-item">
+              <div class="channel-info">
+                <span class="channel-name">GITHUB</span>
+                <span class="channel-handle">@example</span>
+              </div>
+              <a href="https://github.com/example" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+                VISIT ↗
+              </a>
+            </li>
+
+            <li class="channel-item">
+              <div class="channel-info">
+                <span class="channel-name">BANDCAMP</span>
+                <span class="channel-handle">example.bandcamp.com</span>
+              </div>
+              <a href="https://bandcamp.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+                VISIT ↗
+              </a>
+            </li>
+
+            <li class="channel-item">
+              <div class="channel-info">
+                <span class="channel-name">INSTAGRAM</span>
+                <span class="channel-handle">@example_slam</span>
+              </div>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+                VISIT ↗
+              </a>
+            </li>
+          </ul>
+
+          <div class="inquiry-tips">
+            <h4 class="tips-title">LƯU Ý KHI GỬI YÊU CẦU:</h4>
+            <ul class="tips-list">
+              <li>:: Đính kèm tài liệu tham khảo thị giác (nếu có).</li>
+              <li>:: Ghi rõ hạn chót phát hành (release deadline).</li>
+              <li>:: Định dạng ấn phẩm: đĩa CD, Cassette, áo phông hay giao diện web.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    padding: 3rem 0 6rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 860px) {
+    .contact-grid {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+
+  .contact-card, .guidelines-card {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .card-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 0.75rem;
+  }
+
+  .status-online {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .contact-heading {
+    font-size: 2.2rem;
+    color: var(--color-text);
+    line-height: 1;
+  }
+
+  .contact-desc {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .email-box {
+    background: #080808;
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .email-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+  }
+
+  .email-display-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 500px) {
+    .email-display-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .email-text {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--color-accent);
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  .btn-copy {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .full-width-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .placeholder-alert {
+    padding: 1rem;
+    background: rgba(215, 25, 32, 0.08);
+    border: 1px dashed var(--color-accent);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .alert-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .placeholder-alert code {
+    background: #181818;
+    color: var(--color-text);
+    padding: 0.1rem 0.3rem;
+  }
+
+  .social-channels-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .channel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .channel-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .channel-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .channel-handle {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-dim);
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .inquiry-tips {
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--color-border);
+  }
+
+  .tips-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .tips-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+</style>
+
+<script>
+  function setupCopyEmail() {
+    const copyBtn = document.getElementById('copy-email-btn');
+    const copyBtnText = document.getElementById('copy-btn-text');
+    const emailTarget = document.getElementById('target-email');
+
+    if (!copyBtn || !copyBtnText || !emailTarget) return;
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(emailTarget.textContent || 'contact@example.com');
+        copyBtnText.textContent = 'COPIED!';
+        copyBtn.style.borderColor = 'var(--color-accent)';
+        copyBtn.style.color = 'var(--color-accent)';
+
+        setTimeout(() => {
+          copyBtnText.textContent = 'COPY EMAIL';
+          copyBtn.style.borderColor = '';
+          copyBtn.style.color = '';
+        }, 2000);
+      } catch (err) {
+        copyBtnText.textContent = 'MANUAL COPY';
+      }
+    });
+  }
+
+  setupCopyEmail();
+  document.addEventListener('astro:after-swap', setupCopyEmail);
+</script>

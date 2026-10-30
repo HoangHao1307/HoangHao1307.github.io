@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlitchText from '../components/GlitchText.astro';
+import SkullDecal from '../components/SkullDecal.astro';
+import { resolvePath } from '../utils/path';
+---
+
+<BaseLayout title="404 — SIGNAL TERMINATED" description="Tọa độ không tồn tại hoặc đã bị xóa khỏi kho lưu trữ.">
+  <div class="error-page">
+    <div class="container">
+      <div class="error-box bracket-box">
+        <div class="error-status-bar">
+          <span class="catalog-stamp">[ ERROR PROTOCOL: CODE 404 ]</span>
+          <span class="error-code-badge">TRANSMISSION SEVERED</span>
+        </div>
+
+        <!-- Big glitch skull -->
+        <div class="error-skull-wrap" aria-hidden="true">
+          <SkullDecal size={160} />
+        </div>
+
+        <GlitchText text="404" tag="h1" class="error-num" intensity="high" />
+
+        <GlitchText text="SIGNAL LOST // TỌA ĐỘ VÔ ĐỊNH" tag="h2" class="error-title" intensity="medium" />
+
+        <!-- Animated scan bars -->
+        <div class="scan-bars" aria-hidden="true">
+          {Array.from({ length: 6 }).map(() => (
+            <div class="scan-bar"></div>
+          ))}
+        </div>
+
+        <p class="error-desc">
+          Tài nguyên bạn đang cố truy cập không tồn tại, đã bị phân rã hoặc nằm ngoài ranh giới lưu trữ của trạm phát này.
+        </p>
+
+        <div class="barcode-strip error-barcode" aria-hidden="true">
+          |||| | ||||| ||| || |||||| | |||| ||| |||||||
+        </div>
+
+        <div class="error-actions">
+          <a href={resolvePath('/')} class="btn btn-primary">
+            <span>▶</span> RECENTER SIGNAL [HOME]
+          </a>
+          <a href={resolvePath('/posts/')} class="btn">
+            SCAN TRANSMISSIONS [POSTS] →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .error-page {
+    padding: 6rem 0;
+    min-height: 65vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .error-box {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    text-align: center;
+    background: #0d0d0d;
+    animation: error-entrance 0.5s var(--ease-out) both;
+  }
+
+  @keyframes error-entrance {
+    from { opacity: 0; transform: scale(0.97) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .error-status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 0.75rem;
+  }
+
+  .error-code-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    animation: blink-badge 1.5s step-end infinite;
+  }
+
+  @keyframes blink-badge {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .error-skull-wrap {
+    filter: drop-shadow(0 0 20px rgba(215,25,32,0.5));
+    animation: skull-float 4s ease-in-out infinite;
+  }
+
+  @keyframes skull-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+
+  .error-num {
+    font-size: clamp(5rem, 18vw, 10rem);
+    color: var(--color-accent) !important;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    font-family: var(--font-display) !important;
+    text-shadow: 5px 5px 0 #1f0203, 0 0 30px rgba(215,25,32,0.4);
+  }
+
+  .error-title {
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--color-text) !important;
+    margin-top: 0.5rem;
+  }
+
+  /* Animated glitch scan bars */
+  .scan-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 80%;
+    opacity: 0.6;
+  }
+
+  .scan-bar {
+    height: 3px;
+    background: var(--color-accent);
+    border-radius: 1px;
+    animation: scan-bar-flicker 2s ease-in-out infinite;
+  }
+
+  .scan-bar:nth-child(1) { width: 100%; animation-delay: 0s; }
+  .scan-bar:nth-child(2) { width: 75%; animation-delay: 0.1s; }
+  .scan-bar:nth-child(3) { width: 90%; animation-delay: 0.2s; }
+  .scan-bar:nth-child(4) { width: 60%; animation-delay: 0.15s; }
+  .scan-bar:nth-child(5) { width: 85%; animation-delay: 0.05s; }
+  .scan-bar:nth-child(6) { width: 40%; animation-delay: 0.25s; }
+
+  @keyframes scan-bar-flicker {
+    0%, 100% { opacity: 1; transform: scaleX(1); }
+    35% { opacity: 0.4; transform: scaleX(0.92); }
+    70% { opacity: 0.8; transform: scaleX(1.02); }
+    85% { opacity: 0.2; }
+  }
+
+  .error-desc {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+
+  .error-barcode {
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+  }
+
+  .error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border);
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .error-skull-wrap { animation: none; }
+    .scan-bar { animation: none; }
+  }
+</style>

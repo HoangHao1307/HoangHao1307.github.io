@@ -1,0 +1,58 @@
+---
+interface Props {
+  tag?: string;
+  title: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const { tag, title, subtitle, class: className = '' } = Astro.props;
+---
+
+<div class={`section-heading reveal-on-scroll ${className}`}>
+  {tag && (
+    <div class="heading-tag-wrapper">
+      <span class="catalog-stamp">{tag}</span>
+      <span class="heading-line" aria-hidden="true"></span>
+    </div>
+  )}
+  <h2 class="heading-title">{title}</h2>
+  {subtitle && <p class="heading-subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .section-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .heading-tag-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heading-line {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-border),
+      var(--color-border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  .heading-title {
+    color: var(--color-text);
+    margin-top: 0.2rem;
+  }
+
+  .heading-subtitle {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    max-width: 600px;
+    color: var(--color-text-muted);
+  }
+</style>
